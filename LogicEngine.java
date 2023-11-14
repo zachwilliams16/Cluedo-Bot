@@ -1,10 +1,9 @@
 import java.util.ArrayList;
 
 public class LogicEngine {
-    // TODO: if a player didnt prove wrong then they definitly dont have any of
-    // these cards
-    // TODO: if a player did prove wrong they they have to have at least 1 of those
-    // cards
+    // TODO: go through all players and see if they could only have one card from
+    // cards tehy might have proved wrong when they did prove wrong. goes off of
+    // playerdidprovewrong
     // TODO: if a player couldnt have a card because someone else has that card
     // TODO: if a player is the only person who could have this card and we already
     // know what type of card of that type did (eg it was the weapon and this is a
@@ -56,7 +55,7 @@ public class LogicEngine {
                     }
                 }
 
-                for (Card card : MainClass.getWhatCards()) {// for all who cards if not in hand add to not cards
+                for (Card card : MainClass.getWhatCards()) {// for all what cards if not in hand add to not cards
                     boolean cardInHand = false;
                     for (Card myCard : player.getHand()) {
                         if (myCard.equals(card)) {
@@ -69,7 +68,7 @@ public class LogicEngine {
                     }
                 }
 
-                for (Card card : MainClass.getWhereCards()) {// for all who cards if not in hand add to not cards
+                for (Card card : MainClass.getWhereCards()) {// for all where cards if not in hand add to not cards
                     boolean cardInHand = false;
                     for (Card myCard : player.getHand()) {
                         if (myCard.equals(card)) {
@@ -91,12 +90,32 @@ public class LogicEngine {
     public void playerDidntProveWrong() {
         for (Turn turn : MainClass.getLog().getTurns()) {
 
-            for (Player player : getDidntProve(turn)) {
-                turn.getWhoGuess().addDefDoesnt(player);
-                turn.getWhatGuess().addDefDoesnt(player);
-                turn.getWhereGuess().addDefDoesnt(player);
+            if (turn.getMadeToRoom()) {
+                for (Player player : getDidntProve(turn)) {
+                    turn.getWhoGuess().addDefDoesnt(player);
+                    turn.getWhatGuess().addDefDoesnt(player);
+                    turn.getWhereGuess().addDefDoesnt(player);
+                }
             }
         }
     }
 
+    /**
+     * adds cards that player might of had
+     */
+    public void playerDidProveWrong() {
+        for (Turn turn : MainClass.getLog().getTurns()) {
+            if (turn.getMadeToRoom()) {
+                if (turn.getWhoProved() != null) {
+                    ArrayList<Card> initCards = new ArrayList<Card>();
+                    initCards.add(turn.getWhoGuess());
+                    initCards.add(turn.getWhereGuess());
+                    initCards.add(turn.getCardShown());
+                    turn.getWhoProved().addMaybeCards(initCards);
+                }
+
+            }
+
+        }
+    }
 }

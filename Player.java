@@ -99,12 +99,32 @@ public class Player {
         myHand.add(initCard);
     }
 
+    /**
+     * 
+     * @param initCard card to be removed from hand
+     */
     public void removeCard(Card initCard) {
         for (int i = 0; i < myHand.size(); i++) {
             if (myHand.get(i).getID() == initCard.getID()) {
                 myHand.remove(i);
             }
         }
+    }
+
+    /**
+     * 
+     * @param initCards cards to be added to maybe cards
+     */
+    public void addMaybeCards(ArrayList<Card> initCards) {
+        maybeCards.add(initCards);
+    }
+
+    /**
+     * 
+     * @return cards that player might have
+     */
+    public ArrayList<ArrayList<Card>> getMaybyCards() {
+        return maybeCards;
     }
 
 }

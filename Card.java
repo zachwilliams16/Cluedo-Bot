@@ -241,4 +241,15 @@ public class Card {
         maybe.add(initMaybe);
     }
 
+    /**
+     * 
+     * @param initCard other card being tested
+     * @return true if this card equals initcard false if it doesnt
+     */
+    public boolean equals(Card initCard) {
+        if (initCard.getID() == ID) {
+            return true;
+        }
+        return false;
+    }
 }

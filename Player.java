@@ -78,6 +78,14 @@ public class Player {
     }
 
     /**
+     * 
+     * @return size of players hand
+     */
+    public int getHandSize() {
+        return myHand.size();
+    }
+
+    /**
      * adds card to hand if it is not already in hand
      * 
      * @param initCard the card being added to players hand

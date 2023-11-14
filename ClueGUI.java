@@ -14,6 +14,9 @@ public class ClueGUI {
 
     }
 
+
+
+    
     /**
      * clears the board
      */

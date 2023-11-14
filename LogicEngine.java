@@ -33,12 +33,13 @@ public class LogicEngine {
     }
 
     /**
-     * - goes through all players and will find the ones that have all their cards
-     * and
-     * will make all other cards not have that player on the defdoesnt list
+     * goes through all players and sees if any players have a full hand and will
+     * add all other cards not in hand to cards they cant have
+     * 
+     * @return true if something changed or false if something didnt
      */
-    public void playerHasAllCards() {
-
+    public boolean playerHasAllCards() {
+        boolean initSomethingChanged = false;
         for (Player player : MainClass.getPlayers()) {// for all players
             if (player.getHandSize() >= MainClass.getNumCardsInHand()) {// if player has full hand
 
@@ -52,6 +53,7 @@ public class LogicEngine {
                     }
                     if (!cardInHand) {
                         card.addDefDoesnt(player);
+                        initSomethingChanged = true;
                     }
                 }
 
@@ -65,6 +67,7 @@ public class LogicEngine {
                     }
                     if (!cardInHand) {
                         card.addDefDoesnt(player);
+                        initSomethingChanged = true;
                     }
                 }
 
@@ -78,16 +81,22 @@ public class LogicEngine {
                     }
                     if (!cardInHand) {
                         card.addDefDoesnt(player);
+                        initSomethingChanged = true;
                     }
                 }
             }
         }
+        return initSomethingChanged;
     }
 
     /**
-     * goes through entire log and every time someone didnt prove wrong then they
+     * if a player didnt prove wrong then those cards are added to the cards they
+     * cant have
+     * 
+     * @return true if something chnaged or false if something wasnt changed
      */
-    public void playerDidntProveWrong() {
+    public boolean playerDidntProveWrong() {
+        boolean initSomethingChanged = false;
         for (Turn turn : MainClass.getLog().getTurns()) {
 
             if (turn.getMadeToRoom()) {
@@ -95,15 +104,21 @@ public class LogicEngine {
                     turn.getWhoGuess().addDefDoesnt(player);
                     turn.getWhatGuess().addDefDoesnt(player);
                     turn.getWhereGuess().addDefDoesnt(player);
+                    initSomethingChanged = true;
                 }
             }
         }
+        return initSomethingChanged;
     }
 
     /**
-     * adds cards that player might of had
+     * if a player did prove wrong that set of cards are added to their maybe cards
+     * list
+     * 
+     * @return true if something changed
      */
-    public void playerDidProveWrong() {
+    public boolean playerDidProveWrong() {
+        boolean initSomethingChanged = false;
         for (Turn turn : MainClass.getLog().getTurns()) {
             if (turn.getMadeToRoom()) {
                 if (turn.getWhoProved() != null) {
@@ -112,10 +127,13 @@ public class LogicEngine {
                     initCards.add(turn.getWhereGuess());
                     initCards.add(turn.getCardShown());
                     turn.getWhoProved().addMaybeCards(initCards);
+                    initSomethingChanged = true;
                 }
 
             }
 
         }
+        return initSomethingChanged;
     }
+
 }

@@ -4,14 +4,11 @@ public class LogicEngine {
     // TODO: go through all players and see if they could only have one card from
     // cards tehy might have proved wrong when they did prove wrong. goes off of
     // playerdidprovewrong
-    // TODO: if a player couldnt have a card because someone else has that card
     // TODO: if a player is the only person who could have this card and we already
     // know what type of card of that type did (eg it was the weapon and this is a
     // weapon they have to have it);
-    // TODO: if a player owns a card then nobody else does
     // TODO: reset all variables exept log so that there isnt any wrong things (if
     // player adds information)
-    // TODO: find players who couldnt prove on a turn (private method)
 
     private ArrayList<Player> getDidntProve(Turn initTurn) {
         ArrayList<Player> initplayers = new ArrayList<Player>();
@@ -136,4 +133,23 @@ public class LogicEngine {
         return initSomethingChanged;
     }
 
+    /**
+     * if a player owns this card then no one else can own this card for all turns
+     * 
+     * @return true if something changed or false if nothing changed
+     */
+    public boolean playerOwnsCard() {
+        boolean initSomethingChanged = false;
+        for (Card initCard : MainClass.getWhoCards()) {
+            if (initCard.getOwner() != null) {
+                for (Player initPlayer : MainClass.getPlayers()) {
+                    if (!initPlayer.equals(initCard.getOwner())) {
+                        initCard.addDefDoesnt(initPlayer);
+                        initSomethingChanged = true;
+                    }
+                }
+            }
+        }
+        return initSomethingChanged;
+    }
 }

@@ -10,7 +10,9 @@ public class Player {
     String name;
 
     ArrayList<Card> myHand = new ArrayList<Card>();
-    ArrayList<ArrayList<Card>> maybeCards = new ArrayList<ArrayList<Card>>();// stores in list of three because if they proved wrong then they have at least one of these cards they have
+    ArrayList<ArrayList<Card>> maybeCards = new ArrayList<ArrayList<Card>>();// stores in list of three because if they
+                                                                             // proved wrong then they have at least one
+                                                                             // of these cards they have
 
     /**
      * 
@@ -96,6 +98,5 @@ public class Player {
             }
         }
     }
-
 
 }

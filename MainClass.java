@@ -13,9 +13,6 @@ public class MainClass {
 
     private static Log gameLog = new Log();
 
-
-
-    
     /**
      * 
      * @return the who cards
@@ -117,8 +114,6 @@ public class MainClass {
             return null;// TODO: test get player methods
         }
     }
-       
-    
 
     /**
      * 

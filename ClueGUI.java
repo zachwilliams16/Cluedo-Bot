@@ -14,9 +14,6 @@ public class ClueGUI {
 
     }
 
-
-
-    
     /**
      * clears the board
      */
@@ -87,7 +84,6 @@ public class ClueGUI {
             clueSheet.add(Card.toString());
         }
 
-
         while (true) {// last line
             temp = "\\";
             for (int i = 0; i < 38; i++) {
@@ -108,7 +104,7 @@ public class ClueGUI {
             System.out.println(initTurns.get(i).toString());
         }
     }
-    
+
     // TODO: make a logTurn Method
     // TODO: make a edit log method
     // TODO: make method in case player is stabbed or bleeds

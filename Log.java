@@ -49,10 +49,9 @@ public class Log {
      * 
      * @return the full game log
      */
-    public ArrayList<Turn> returnGameLog(){
+    public ArrayList<Turn> returnGameLog() {
         return gameLog;
     }
-
 
 }
 

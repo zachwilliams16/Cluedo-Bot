@@ -10,7 +10,7 @@ public class Card {
 
     String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";// list of of possible player id's
 
-    Player defDoes = null;// a player definitly does have this card represetned with O
+    Player owner = null;// a player definitly does have this card represetned with O
     ArrayList<Player> defDoesnt = new ArrayList<Player>();// A player definitly doesnt have this card represented with /
     ArrayList<Player> maybe = new ArrayList<Player>();// A player might have this card represented with ?
 
@@ -40,10 +40,10 @@ public class Card {
     public String toString() {
         String toString = "";
         // if a player has this card
-        if (defDoes == null) {
+        if (owner== null) {
             toString += "|";
         } else {
-            toString += defDoes.getletterID();
+            toString += owner.getletterID();
         }
 
         // adds the card name
@@ -87,9 +87,9 @@ public class Card {
         for (int i = 0; i < MainClass.getNumPlayers(); i++) {// player symbols
             boolean haveinfo = false;
 
-            if (defDoes != null) {// if a player does have this card all other players dont have this card
+            if (owner!= null) {// if a player does have this card all other players dont have this card
                 for (int a = 0; a < MainClass.getNumPlayers(); a++) {
-                    if (String.valueOf(letters.charAt(a)).equals(defDoes.getletterID())) {
+                    if (String.valueOf(letters.charAt(a)).equals(owner.getletterID())) {
                         returnString += "O ";
                     } else {
                         returnString += "X ";
@@ -129,14 +129,6 @@ public class Card {
 
     /**
      * 
-     * @return the player who owns it or null if none own it
-     */
-    public Player getDefDoes() {
-        return defDoes;
-    }
-
-    /**
-     * 
      * @return the list of players who dont have this
      */
     public ArrayList<Player> getDefDoesnt() {
@@ -164,7 +156,7 @@ public class Card {
      * @param initOwner The owner of a card is set to this player
      */
     public void setOwner(Player initOwner) {
-        defDoes = initOwner;
+        owner= initOwner;
         initOwner.addCard(this);
         for (int i = 0; i < defDoesnt.size(); i++) {// removes if it is in defdoesnt
             if (defDoesnt.get(i).getletterID().equals(initOwner.getletterID())) {
@@ -181,6 +173,10 @@ public class Card {
 
     }
 
+    public Player getOwner() {
+        return owner;
+    }
+
     /**
      * adds a player to defdoesnt which means they dont own this card, also removes
      * them from maybe and defdeos if they are in those
@@ -189,10 +185,10 @@ public class Card {
      */
     public void addDefDoesnt(Player initNotOwner) {
 
-        if (defDoes != null) {// if initNotOwner owns it they now dont own it
-            if (defDoes.getletterID().equals(initNotOwner.getletterID())) {
-                defDoes.removeCard(this);
-                defDoes = null;
+        if (owner!= null) {// if initNotOwner owns it they now dont own it
+            if (owner.getletterID().equals(initNotOwner.getletterID())) {
+                owner.removeCard(this);
+                owner= null;
             }
         }
 
@@ -222,8 +218,8 @@ public class Card {
      * @param initMaybe the player who might have this card
      */
     public void addMaybe(Player initMaybe) {
-        if (defDoes != null) {// if defdoes is not null
-            if (initMaybe.getletterID().equals(defDoes.getletterID())) {// checks if it is in defDoes
+        if (owner!= null) {// if owneris not null
+            if (initMaybe.getletterID().equals(owner.getletterID())) {// checks if it is in defDoes
                 return;
             }
         }

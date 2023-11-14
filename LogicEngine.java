@@ -1,5 +1,6 @@
-public class LogicEngine {
+import java.util.ArrayList;
 
+public class LogicEngine {
     // TODO: if a player didnt prove wrong then they definitly dont have any of
     // these cards
     // TODO: if a player did prove wrong they they have to have at least 1 of those
@@ -12,6 +13,25 @@ public class LogicEngine {
     // TODO: reset all variables exept log so that there isnt any wrong things (if
     // player adds information)
     // TODO: find players who couldnt prove on a turn (private method)
+
+    private ArrayList<Player> getDidntProve(Turn initTurn) {
+        ArrayList<Player> initplayers = new ArrayList<Player>();
+
+        int temp = initTurn.getWhosTurn().getNumID();
+        while (true) {
+            temp++;
+            if (temp >= MainClass.getNumPlayers()) {
+                temp = 0;
+            }
+            if (temp == initTurn.getWhosTurn().getNumID()) {
+                break;
+            }
+            initplayers.add(MainClass.getPlayer(temp));
+
+        }
+
+        return initplayers;
+    }
 
     /**
      * - goes through all players and will find the ones that have all their cards
@@ -64,4 +84,19 @@ public class LogicEngine {
             }
         }
     }
+
+    /**
+     * goes through entire log and every time someone didnt prove wrong then they
+     */
+    public void playerDidntProveWrong() {
+        for (Turn turn : MainClass.getLog().getTurns()) {
+
+            for (Player player : getDidntProve(turn)) {
+                turn.getWhoGuess().addDefDoesnt(player);
+                turn.getWhatGuess().addDefDoesnt(player);
+                turn.getWhereGuess().addDefDoesnt(player);
+            }
+        }
+    }
+
 }

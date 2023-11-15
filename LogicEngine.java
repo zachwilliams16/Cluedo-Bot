@@ -152,4 +152,62 @@ public class LogicEngine {
         }
         return initSomethingChanged;
     }
+
+    public boolean onlyPlayerPossible() {
+        boolean initSomethingChanged = false;
+
+        boolean whoCardGuess = false;
+        ArrayList<Card> initWhoCards = new ArrayList<Card>();
+
+        boolean whatCardGuess = false;
+        ArrayList<Card> initWhatCards = new ArrayList<Card>();
+
+        boolean whereCardGuess = false;
+        ArrayList<Card> initWhereCards = new ArrayList<Card>();
+
+        for (Card initCard : MainClass.getWhoCards()) {
+            if (initCard.getDefDoesnt().size() == MainClass.getNumPlayers()) {
+                whoCardGuess = true;
+            } else if (initCard.getDefDoesnt().size() == MainClass.getNumPlayers() - 1) {
+                initWhoCards.add(initCard);
+                initSomethingChanged = true;
+            }
+        }
+        if (whoCardGuess) {
+            for (Card initCard : initWhoCards) {
+                initCard.setOwner(initCard.getMaybe().get(0));
+            }
+        }
+
+        for (Card initCard : MainClass.getWhatCards()) {
+            if (initCard.getDefDoesnt().size() == MainClass.getNumPlayers()) {
+                whatCardGuess = true;
+            } else if (initCard.getDefDoesnt().size() == MainClass.getNumPlayers() - 1) {
+                initWhatCards.add(initCard);
+                initSomethingChanged = true;
+            }
+        }
+        if (whatCardGuess) {
+            for (Card initCard : initWhatCards) {
+                initCard.setOwner(initCard.getMaybe().get(0));
+            }
+        }
+
+        for (Card initCard : MainClass.getWhereCards()) {
+            if (initCard.getDefDoesnt().size() == MainClass.getNumPlayers()) {
+                whereCardGuess = true;
+            } else if (initCard.getDefDoesnt().size() == MainClass.getNumPlayers() - 1) {
+                initWhereCards.add(initCard);
+                initSomethingChanged = true;
+            }
+        }
+        if (whereCardGuess) {
+            for (Card initCard : initWhereCards) {
+                initCard.setOwner(initCard.getMaybe().get(0));
+            }
+        }
+
+        return initSomethingChanged;
+    }
+
 }

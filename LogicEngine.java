@@ -4,11 +4,6 @@ public class LogicEngine {
     // TODO: go through all players and see if they could only have one card from
     // cards tehy might have proved wrong when they did prove wrong. goes off of
     // playerdidprovewrong
-    // TODO: if a player is the only person who could have this card and we already
-    // know what type of card of that type did (eg it was the weapon and this is a
-    // weapon they have to have it);
-    // TODO: reset all variables exept log so that there isnt any wrong things (if
-    // player adds information)
 
     private ArrayList<Player> getDidntProve(Turn initTurn) {
         ArrayList<Player> initplayers = new ArrayList<Player>();
@@ -153,6 +148,14 @@ public class LogicEngine {
         return initSomethingChanged;
     }
 
+    /**
+     * if a final guess if known (eg: we know the person, place or thing) then if a
+     * person is the only person who could have it (eg: only player who might have
+     * it (maybe list) and all other players dont have this card (defDoesnt list))
+     * then that player has to have that card
+     * 
+     * @return true if something changed false if nothing changed
+     */
     public boolean onlyPlayerPossible() {
         boolean initSomethingChanged = false;
 

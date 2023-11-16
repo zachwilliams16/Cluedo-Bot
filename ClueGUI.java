@@ -150,6 +150,45 @@ public class ClueGUI {
 
     /**
      * 
+     * @param initPlayer
+     * @return
+     */
+    private boolean confirmWhoProved(Player initPlayer) {
+        clearScreen();
+        Scanner input = new Scanner(System.in);
+        if (initPlayer == null) {
+            System.out.println("No one proved them wrong?");
+        } else {
+            System.out.println(initPlayer.getName() + " proved them wrong?");
+        }
+
+        System.out.println("0 - yes/correct\n1 - no/incorrect");
+        String initWhoProvedWrongInput = input.nextLine();
+        input.close();
+
+        try {
+            int initPlayerAnswerNum = Integer.parseInt(initWhoProvedWrongInput);
+            if (initPlayerAnswerNum == 0) {
+                return true;
+            } else if (initPlayerAnswerNum == 1) {
+                return false;
+            } else {
+                return confirmWhoProved(initPlayer);
+            }
+        } catch (NumberFormatException e) {
+            if (initWhoProvedWrongInput.equals("yes") || initWhoProvedWrongInput.equals("correct")) {
+                return true;
+            } else if (initWhoProvedWrongInput.equals("no") || initWhoProvedWrongInput.equals("incorrect")) {
+                return false;
+            } else {
+                return confirmWhoProved(initPlayer);
+            }
+        }
+
+    }
+
+    /**
+     * 
      * @return the players whos turn it is
      */
     private Player askWhosTurn() {
@@ -163,12 +202,12 @@ public class ClueGUI {
         System.out.println("Which player's turn is it?");// ask which player it is
         String initPlayerName = input.nextLine();
         initPlayerName.toLowerCase();
+        input.close();
 
         try {// if they responded with a number
             int initPlayerID = Integer.parseInt(initPlayerName);
             for (Player initPlayer : MainClass.getPlayers()) {
                 if (initPlayer.getNumID() == initPlayerID) {
-                    input.close();
                     return initPlayer;
                 }
             }
@@ -182,7 +221,6 @@ public class ClueGUI {
         } catch (NumberFormatException e) {// if they responded with a String
             for (Player initPlayer : MainClass.getPlayers()) {
                 if (initPlayer.getName().equals(initPlayerName)) {
-                    input.close();
                     return initPlayer;
                 }
             }
@@ -195,15 +233,89 @@ public class ClueGUI {
 
         }
 
-        input.close();
         return askWhosTurn();
 
     }
 
+    /**
+     * gets who proved whos turn it was wrong
+     * 
+     * @return who proved wrong, null if no one did
+     */
+    private Player askWhoProved() {
+        Scanner input = new Scanner(System.in);
+        String initwhoProvedInput = "";
+        while (true) {// prints out charecter names and gets who proved
+            for (int i = 0; i <= MainClass.getPlayers().size(); i++) {
+                if (MainClass.getNumPlayers() == i) {
+                    System.out.println(i + " - no one");
+                } else {
+                    System.out.println(i + " - " + MainClass.getPlayer(i).getName());
+                }
+
+            }
+            System.out.println("Who Proved Wrong?");
+            initwhoProvedInput = input.nextLine();
+            initwhoProvedInput.toLowerCase();
+            break;
+        }
+
+        input.close();
+        try {// if they responded with a int
+
+            int initwhoProvedInputNum = Integer.parseInt(initwhoProvedInput);
+
+            if (initwhoProvedInputNum == MainClass.getNumPlayers()) {
+                return null;
+            }
+
+            for (Player initPlayer : MainClass.getPlayers()) {
+                if (initPlayer.getNumID() == initwhoProvedInputNum) {
+                    return initPlayer;
+                }
+            }
+
+            System.out.println("Hmm...\nI couldn't find that player. please try again");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+
+            }
+        } catch (Exception e) {// if they responded with a string
+            if (initwhoProvedInput.equals("no one")) {
+                return null;
+            }
+
+            for (Player initPlayer : MainClass.getPlayers()) {
+                if (initPlayer.getName().equals(initwhoProvedInput)) {
+                    return initPlayer;
+                }
+            }
+            System.out.println("Hmm...\nI couldn't find that player. please try again");
+
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException a) {
+
+            }
+        }
+
+        return askWhoProved();
+    }
+
     public void logTurn() {
-        Player initWhosTurn = askWhosTurn();// whos turn it is
-        while (!comfirmWhosTurn(initWhosTurn)) {
-            initWhosTurn = askWhosTurn();
+        Player initWhosTurnPlayer = askWhosTurn();// whos turn it is
+        while (!comfirmWhosTurn(initWhosTurnPlayer)) {
+            initWhosTurnPlayer = askWhosTurn();
+        }
+
+        // what room
+        // who
+        // what
+
+        Player initwhoProvedWrongPlayer = askWhoProved();
+        while (!confirmWhoProved(initwhoProvedWrongPlayer)) {
+            initwhoProvedWrongPlayer = askWhoProved();
         }
     }
 }

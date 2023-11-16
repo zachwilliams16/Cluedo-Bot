@@ -108,4 +108,16 @@ public class ClueGUI {
     // TODO: make a logTurn Method
     // TODO: make a edit log method
     // TODO: make method in case player is stabbed or bleeds
+
+    private Player askWhosTurn() {
+        clearScreen();
+        for (Player initPlayer : MainClass.getPlayers()) {
+            System.out.println(initPlayer.getNumID() + " - " + initPlayer.getName());
+        }
+
+    }
+
+    public void logTurn() {
+
+    }
 }

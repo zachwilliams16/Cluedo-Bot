@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * ClueGUI
@@ -109,15 +110,100 @@ public class ClueGUI {
     // TODO: make a edit log method
     // TODO: make method in case player is stabbed or bleeds
 
-    private Player askWhosTurn() {
+    /**
+     * collects if the user gave the correct person for whos turn it is
+     * 
+     * @param initPlayer the player whos turn it might be
+     * @return if the player meant to give this player
+     */
+    private boolean comfirmWhosTurn(Player initPlayer) {
         clearScreen();
-        for (Player initPlayer : MainClass.getPlayers()) {
-            System.out.println(initPlayer.getNumID() + " - " + initPlayer.getName());
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("It is " + initPlayer.getName() + "'s turn?\n0 - yes/correct\n1 - no/incorrect");
+        String initPlayerAnswer = input.nextLine();
+        initPlayerAnswer.toLowerCase();
+
+        input.close();
+        try {
+            int initPlayerAnswerNum = Integer.parseInt(initPlayerAnswer);
+            if (initPlayerAnswerNum == 0) {
+                return true;
+            } else if (initPlayerAnswerNum == 1) {
+                return false;
+            } else {
+                return comfirmWhosTurn(initPlayer);
+            }
+
+        } catch (NumberFormatException e) {
+            if (initPlayerAnswer.equals("yes") || initPlayerAnswer.equals("correct")) {
+                return true;
+            } else if (initPlayerAnswer.equals("no") || initPlayerAnswer.equals("incorrect")) {
+                return false;
+            } else {
+                return comfirmWhosTurn(initPlayer);
+            }
+
         }
 
     }
 
-    public void logTurn() {
+    /**
+     * 
+     * @return the players whos turn it is
+     */
+    private Player askWhosTurn() {
+        Scanner input = new Scanner(System.in);
+        clearScreen();
 
+        for (Player initPlayer : MainClass.getPlayers()) {// print out players
+            System.out.println(initPlayer.getNumID() + " - " + initPlayer.getName());
+        }
+
+        System.out.println("Which player's turn is it?");// ask which player it is
+        String initPlayerName = input.nextLine();
+        initPlayerName.toLowerCase();
+
+        try {// if they responded with a number
+            int initPlayerID = Integer.parseInt(initPlayerName);
+            for (Player initPlayer : MainClass.getPlayers()) {
+                if (initPlayer.getNumID() == initPlayerID) {
+                    input.close();
+                    return initPlayer;
+                }
+            }
+            System.out.println("Hmm...\n I couldn't find that player. Please try again");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+
+            }
+
+        } catch (NumberFormatException e) {// if they responded with a String
+            for (Player initPlayer : MainClass.getPlayers()) {
+                if (initPlayer.getName().equals(initPlayerName)) {
+                    input.close();
+                    return initPlayer;
+                }
+            }
+            System.out.println("Hmm...\n I couldn't find that player. Please try again");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException b) {
+
+            }
+
+        }
+
+        input.close();
+        return askWhosTurn();
+
+    }
+
+    public void logTurn() {
+        Player initWhosTurn = askWhosTurn();// whos turn it is
+        while (!comfirmWhosTurn(initWhosTurn)) {
+            initWhosTurn = askWhosTurn();
+        }
     }
 }

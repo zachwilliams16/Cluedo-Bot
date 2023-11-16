@@ -187,6 +187,38 @@ public class ClueGUI {
 
     }
 
+    private boolean confirmCard(Card initCard) {
+        clearScreen();
+        Scanner input = new Scanner(System.in);
+        System.out.println("They chose the " + initCard.getName() + "?\n0 - yes\n1 - no");
+
+        String initCardAnswerInput = input.nextLine();
+        initCardAnswerInput.toLowerCase();
+        input.close();
+
+        try {
+            int initCardAnswerInputInt = Integer.parseInt(initCardAnswerInput);
+            if (initCardAnswerInputInt == 0) {
+                return true;
+            } else if (initCardAnswerInputInt == 1) {
+                return false;
+            } else {
+                return confirmCard(initCard);
+            }
+
+        } catch (NumberFormatException e) {
+            if (initCardAnswerInput.equals("yes")) {
+                return true;
+            } else if (initCardAnswerInput.equals("no")) {
+                return false;
+            } else {
+                return confirmCard(initCard);
+            }
+
+        }
+
+    }
+
     /**
      * 
      * @return the players whos turn it is
@@ -303,12 +335,57 @@ public class ClueGUI {
         return askWhoProved();
     }
 
+    /**
+     * 
+     * @return the room that the player was in
+     */
+    private Card askWhatRoom() {
+        Scanner input = new Scanner(System.in);
+        clearScreen();
+        for (Card initCard : MainClass.getWhereCards()) {
+            System.out.println(initCard.getID() + " - " + initCard.getName());
+        }
+        String initCardNameString = input.nextLine();
+        initCardNameString.toLowerCase();
+        input.close();
+
+        try {
+            int initCardNameInt = Integer.parseInt(initCardNameString);
+            for (Card initCard : MainClass.getWhereCards()) {
+                if (initCard.getID() == initCardNameInt) {
+                    return initCard;
+                }
+            }
+            System.out.println("Hmm...\nI cant find that card");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+
+            }
+        } catch (Exception e) {
+            for (Card initCard : MainClass.getWhereCards()) {
+                if (initCard.getName().equals(initCardNameString)) {
+                    return initCard;
+                }
+            }
+            System.out.println("Hmm...\nI cant find that card");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException a) {
+
+            }
+
+        }
+        return askWhatRoom();
+    }
+
     public void logTurn() {
         Player initWhosTurnPlayer = askWhosTurn();// whos turn it is
         while (!comfirmWhosTurn(initWhosTurnPlayer)) {
             initWhosTurnPlayer = askWhosTurn();
         }
 
+        // did they make it to a room
         // what room
         // who
         // what

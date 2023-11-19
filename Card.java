@@ -40,7 +40,7 @@ public class Card {
     public String toString() {
         String toString = "";
         // if a player has this card
-        if (owner== null) {
+        if (owner == null) {
             toString += "|";
         } else {
             toString += owner.getletterID();
@@ -87,7 +87,7 @@ public class Card {
         for (int i = 0; i < MainClass.getNumPlayers(); i++) {// player symbols
             boolean haveinfo = false;
 
-            if (owner!= null) {// if a player does have this card all other players dont have this card
+            if (owner != null) {// if a player does have this card all other players dont have this card
                 for (int a = 0; a < MainClass.getNumPlayers(); a++) {
                     if (String.valueOf(letters.charAt(a)).equals(owner.getletterID())) {
                         returnString += "O ";
@@ -156,7 +156,7 @@ public class Card {
      * @param initOwner The owner of a card is set to this player
      */
     public void setOwner(Player initOwner) {
-        owner= initOwner;
+        owner = initOwner;
         initOwner.addCard(this);
         for (int i = 0; i < defDoesnt.size(); i++) {// removes if it is in defdoesnt
             if (defDoesnt.get(i).getletterID().equals(initOwner.getletterID())) {
@@ -185,10 +185,10 @@ public class Card {
      */
     public void addDefDoesnt(Player initNotOwner) {
 
-        if (owner!= null) {// if initNotOwner owns it they now dont own it
+        if (owner != null) {// if initNotOwner owns it they now dont own it
             if (owner.getletterID().equals(initNotOwner.getletterID())) {
                 owner.removeCard(this);
-                owner= null;
+                owner = null;
             }
         }
 
@@ -218,7 +218,7 @@ public class Card {
      * @param initMaybe the player who might have this card
      */
     public void addMaybe(Player initMaybe) {
-        if (owner!= null) {// if owneris not null
+        if (owner != null) {// if owneris not null
             if (initMaybe.getletterID().equals(owner.getletterID())) {// checks if it is in defDoes
                 return;
             }

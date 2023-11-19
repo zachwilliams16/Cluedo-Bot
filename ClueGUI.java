@@ -219,6 +219,40 @@ public class ClueGUI {
 
     }
 
+    private void finalConfirm(Turn initTurn) {
+        System.out.println(initTurn);
+        System.out.println("Is this correct?\n0 - yes\n1 - no");
+
+        Scanner input = new Scanner(System.in);
+        String initUserInputString = input.nextLine();
+        input.close();
+
+        boolean initTheyWantToChange = false;
+        try {
+            int initUserInputInt = Integer.parseInt(initUserInputString);
+            if (initUserInputInt == 0) {
+                return;
+            } else if (initUserInputInt == 1) {
+                initTheyWantToChange = true;
+            }
+        } catch (Exception e) {
+
+            if (initUserInputString.equals("yes")) {
+                return;
+            } else if (initUserInputString.equals("no")) {
+                initTheyWantToChange = true;
+            }
+        }
+        if(initTheyWantToChange){
+            changeEditTurn(initTurn);
+        }
+
+
+    }
+public void changeEditTurn(Turn initTurn){
+
+}
+    
     /**
      * 
      * @return the players whos turn it is
@@ -533,12 +567,19 @@ public class ClueGUI {
                 initwhoProvedWrongPlayer = askWhoProved();
             }
             Card initCardShown = null;
-            //FIXME: add a card shown so that if its your turn. 
+            // FIXME: add a card shown so that if its your turn.
+            if (initCardShown != null) {
+                initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard,
+                        initWhereGuessCard, initCardShown);
+            } else {
+                initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard,
+                        initWhereGuessCard);
+            }
+            finalConfirm(initTurn);
+            MainClass.getLog().addTurn(initTurn);// add a confirm for if they didnt make it to a room
+        } else {
 
-            initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard, initWhereGuessCard)
-            
-            System.out.println()
-        } 
-        
+        }
+
     }
 }

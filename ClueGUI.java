@@ -277,6 +277,7 @@ public class ClueGUI {
     private Player askWhoProved() {
         Scanner input = new Scanner(System.in);
         String initwhoProvedInput = "";
+        clearScreen();
         while (true) {// prints out charecter names and gets who proved
             for (int i = 0; i <= MainClass.getPlayers().size(); i++) {
                 if (MainClass.getNumPlayers() == i) {
@@ -337,9 +338,103 @@ public class ClueGUI {
 
     /**
      * 
+     * @return the who card they guessed
+     */
+    private Card askWhoCard() {
+        Scanner input = new Scanner(System.in);
+        clearScreen();
+        for (Card initCard : MainClass.getWhoCards()) {
+            System.out.println(initCard.getID() + " - " + initCard.getName());
+        }
+        System.out.println("Who did they choose?");
+
+        String getUserInputString = input.nextLine();
+        input.close();
+        try {
+            int getUserInputInt = Integer.parseInt(getUserInputString);
+            for (Card initCard : MainClass.getWhoCards()) {
+                if (initCard.getID() == getUserInputInt) {
+                    return initCard;
+                }
+            }
+            System.out.println("Hmm...\nI can't find that person");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+
+            }
+            return askWhoCard();
+
+        } catch (NumberFormatException e) {
+            for (Card initCard : MainClass.getWhoCards()) {
+                if (initCard.getName().equals(getUserInputString)) {
+                    return initCard;
+                }
+            }
+            System.out.println("Hmm...\nI can't find that person");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException a) {
+
+            }
+            return askWhoCard();
+        }
+    }
+
+    /**
+     * 
+     * @return the what card that a player guessed on their turn
+     */
+    private Card askWhatCard() {
+        Scanner input = new Scanner(System.in);
+        clearScreen();
+        for (Card initCard : MainClass.getWhatCards()) {
+            System.out.println(initCard.getID() + " - " + initCard.getName());
+        }
+        System.out.println("What did they guess?");
+
+        String initUserInputString = input.nextLine();
+        input.close();
+
+        initUserInputString.toLowerCase();
+
+        try {
+            int initUserInputInt = Integer.parseInt(initUserInputString);
+            for (Card initCard : MainClass.getWhatCards()) {
+                if (initCard.getID() == initUserInputInt) {
+                    return initCard;
+                }
+            }
+            System.out.println("Hmm...\nI can't find that thing.");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+
+            }
+            return askWhatCard();
+
+        } catch (NumberFormatException e) {
+            for (Card initCard : MainClass.getWhatCards()) {
+                if (initCard.getName().equals(initUserInputString)) {
+                    return initCard;
+                }
+            }
+            System.out.println("Hmm...\nI can't find that thing.");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException a) {
+
+            }
+            return askWhatCard();
+        }
+
+    }
+
+    /**
+     * 
      * @return the room that the player was in
      */
-    private Card askWhatRoom() {
+    private Card askWhereCard() {
         Scanner input = new Scanner(System.in);
         clearScreen();
         for (Card initCard : MainClass.getWhereCards()) {
@@ -376,23 +471,74 @@ public class ClueGUI {
             }
 
         }
-        return askWhatRoom();
+        return askWhereCard();
+    }
+
+    /**
+     * 
+     * @return true if they made to a room false if they didn't
+     */
+    private boolean didTheyMakeToRoom() {
+        Scanner input = new Scanner(System.in);
+        clearScreen();
+        System.out.println("Did they make it to a room?\n0 - yes/true\n1 - no/false");
+
+        String initUserInputString = input.nextLine();
+        initUserInputString.toLowerCase();
+        input.close();
+
+        try {
+            int inituserInputInt = Integer.parseInt(initUserInputString);
+            if (inituserInputInt == 0) {
+                return true;
+            } else if (inituserInputInt == 1) {
+                return false;
+            } else {
+                return didTheyMakeToRoom();
+            }
+        } catch (NumberFormatException e) {
+            if (initUserInputString.equals("yes") || initUserInputString.equals("true")) {
+                return true;
+            } else if (initUserInputString.equals("no") || initUserInputString.equals("false")) {
+                return false;
+            } else {
+                return didTheyMakeToRoom();
+            }
+        }
+
     }
 
     public void logTurn() {
         Player initWhosTurnPlayer = askWhosTurn();// whos turn it is
+        Turn initTurn = null;
         while (!comfirmWhosTurn(initWhosTurnPlayer)) {
             initWhosTurnPlayer = askWhosTurn();
         }
+        boolean initDidTheyMakeToRoom = didTheyMakeToRoom();// did they make it to a room
+        if (!initDidTheyMakeToRoom) {// did they make it to a room
+            Card initWhereGuessCard = askWhereCard();// where they guessed
+            while (!confirmCard(initWhereGuessCard)) {
+                initWhereGuessCard = askWhereCard();
+            }
+            Card initWhoGuessCard = askWhoCard();// who they guessed
+            while (!confirmCard(initWhoGuessCard)) {
+                initWhoGuessCard = askWhoCard();
+            }
+            Card initWhatGuessCard = askWhatCard();
+            while (confirmCard(initWhatGuessCard)) {
+                initWhatGuessCard = askWhatCard();
+            }
+            Player initwhoProvedWrongPlayer = askWhoProved();// who proved wrong
+            while (!confirmWhoProved(initwhoProvedWrongPlayer)) {
+                initwhoProvedWrongPlayer = askWhoProved();
+            }
+            Card initCardShown = null;
+            //FIXME: add a card shown so that if its your turn. 
 
-        // did they make it to a room
-        // what room
-        // who
-        // what
-
-        Player initwhoProvedWrongPlayer = askWhoProved();
-        while (!confirmWhoProved(initwhoProvedWrongPlayer)) {
-            initwhoProvedWrongPlayer = askWhoProved();
-        }
+            initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard, initWhereGuessCard)
+            
+            System.out.println()
+        } 
+        
     }
 }

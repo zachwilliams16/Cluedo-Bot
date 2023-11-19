@@ -17,32 +17,11 @@ public class Log {
     }
 
     /**
-     * For if they did make it to a room
-     * give null for whoproved if noboody did
      * 
-     * @param initWhoTurn        whos turn it is
-     * @param initwhoProvedWrong who proved them wrong. null if none did
-     * @param initWhoGuess       who they guessed
-     * @param initWhatGuess      what they guessed
-     * @param initWhereGuess     where they guessed
+     * @param initTurn adds a turn
      */
-    public void logTurn(Player initWhoTurn, Player initwhoProvedWrong, Card initWhoGuess, Card initWhatGuess,
-            Card initWhereGuess) {
-        gameLog.add(new Turn(initWhoTurn, initwhoProvedWrong, initWhoGuess, initWhatGuess, initWhereGuess));
-    }
-
-    public void logTurn(Player initWhoTurn, Player initwhoProvedWrong, Card initWhoGuess, Card initWhatGuess,
-            Card initWhereGuess, Card cardShown) {
-        gameLog.add(new Turn(initWhoTurn, initwhoProvedWrong, initWhoGuess, initWhatGuess, initWhereGuess));
-    }
-
-    /**
-     * for if they didnt make it to room
-     * 
-     * @param initWhoTurn whos turn it is
-     */
-    public void logTurn(Player initWhoTurn) {
-        gameLog.add(new Turn(initWhoTurn));
+    public void addTurn(Turn initTurn) {
+        gameLog.add(initTurn);
     }
 
     /**

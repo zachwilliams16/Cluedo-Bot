@@ -106,10 +106,6 @@ public class ClueGUI {
         }
     }
 
-    // TODO: make a logTurn Method
-    // TODO: make a edit log method
-    // TODO: make method in case player is stabbed or bleeds
-
     /**
      * collects if the user gave the correct person for whos turn it is
      * 
@@ -243,16 +239,16 @@ public class ClueGUI {
                 initTheyWantToChange = true;
             }
         }
-        if(initTheyWantToChange){
+        if (initTheyWantToChange) {
             changeEditTurn(initTurn);
         }
 
+    }
+
+    public void changeEditTurn(Turn initTurn) {
 
     }
-public void changeEditTurn(Turn initTurn){
 
-}
-    
     /**
      * 
      * @return the players whos turn it is
@@ -542,6 +538,10 @@ public void changeEditTurn(Turn initTurn){
 
     }
 
+    // TODO: make a logTurn Method
+    // TODO: make a edit log method
+    // TODO: make method in case player is stabbed or bleeds
+    // TODO: add card shown method in case its your turn
     public void logTurn() {
         Player initWhosTurnPlayer = askWhosTurn();// whos turn it is
         Turn initTurn = null;
@@ -568,6 +568,7 @@ public void changeEditTurn(Turn initTurn){
             }
             Card initCardShown = null;
             // FIXME: add a card shown so that if its your turn.
+
             if (initCardShown != null) {
                 initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard,
                         initWhereGuessCard, initCardShown);

@@ -9,6 +9,7 @@ public class MainClass {
     private static ArrayList<Card> whoCards = new ArrayList<Card>();
     private static ArrayList<Card> whatCards = new ArrayList<Card>();
     private static ArrayList<Card> whereCards = new ArrayList<Card>();
+    private static ArrayList<Card> allCards = new ArrayList<Card>();
     private static int CardsInHand;// number of cards in each persons hand
 
     private static Log gameLog = new Log();
@@ -39,6 +40,28 @@ public class MainClass {
 
     /**
      * 
+     * @returns all cards cards are in order by type (Whoo, What, and Where) and
+     *          then by card id
+     */
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
+    /**
+     * 
+     * @param initIndex index of card needed in allCards
+     * @return the card needed in allCards
+     */
+    public static Card getOneCard(int initIndex) {
+        try {
+            return allCards.get(initIndex);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 
      * @return the number of players
      */
     public static int getNumPlayers() {
@@ -60,13 +83,19 @@ public class MainClass {
                 "Billiard Room", "Library", "Lounge", "Hall", "Study"));
 
         for (int i = 0; i < who.size(); i++) {
-            whoCards.add(new Card(who.get(i), 0));
+            Card initCard = new Card(who.get(i), 0);
+            whoCards.add(initCard);
+            allCards.add(initCard);
         }
         for (int i = 0; i < what.size(); i++) {
-            whatCards.add(new Card(what.get(i), 1));
+            Card initCard = new Card(what.get(i), 1);
+            whatCards.add(initCard);
+            allCards.add(initCard);
         }
         for (int i = 0; i < where.size(); i++) {
-            whereCards.add(new Card(where.get(i), 2));
+            Card initCard = new Card(where.get(i), 2);
+            whereCards.add(initCard);
+            allCards.add(initCard);
         }
 
     }

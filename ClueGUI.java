@@ -246,7 +246,7 @@ public class ClueGUI {
     }
 
     public void changeEditTurn(Turn initTurn) {
-
+        // TODO: asks what they want to change and changes it
     }
 
     /**
@@ -538,10 +538,99 @@ public class ClueGUI {
 
     }
 
+    /**
+     * 
+     * @return the card that was shown
+     */
+    private Card getCardShown() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Were you shown a card?\n0 - yes\n1 - no");
+
+        boolean shownCard = false;
+        String userAnswerInputString = input.nextLine();
+        userAnswerInputString.toLowerCase();
+        try {// if they gave a number
+            int userAnswerInputInt = Integer.parseInt(userAnswerInputString);
+            if (userAnswerInputInt == 0) {
+                shownCard = true;
+            } else if (userAnswerInputInt == 1) {
+
+            } else {
+                System.out.println("Hmm...\nI couldn't find that answer");
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+
+                }
+                return getCardShown();
+            }
+        } catch (Exception e) {// if they gave a string
+            if (userAnswerInputString.equals("yes")) {
+                shownCard = true;
+            } else if (userAnswerInputString.equals("no")) {
+
+            } else {
+                System.out.println("Hmm...\nI couldn't find that answer");
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException a) {
+
+                }
+                return getCardShown();
+            }
+        }
+
+        if (!shownCard) {// if they were not shown a card
+            input.close();
+            return null;
+        }
+
+        clearScreen();
+        for (int i = 0; i < MainClass.getAllCards().size(); i++) {
+            System.out.println(i + " - " + MainClass.getOneCard(i));
+        }
+
+        System.out.println("Which card did you see?");
+        userAnswerInputString = input.nextLine();
+        userAnswerInputString.toLowerCase();
+        input.close();
+
+        try {// if they responded with a int
+            int userAnswerInputInt = Integer.parseInt(userAnswerInputString);
+            if (MainClass.getOneCard(userAnswerInputInt) != null) {
+                return MainClass.getOneCard(userAnswerInputInt);
+            } else {
+
+                System.out.println("Hmm...\nI couldn't find that card.");
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+
+                }
+                return getCardShown();
+            }
+
+        } catch (Exception e) {// if they responded with a string
+            for(Card initCard : MainClass.getAllCards()){
+                if(initCard.getName().equals(userAnswerInputString)){
+                    return initCard;// finish else
+                }
+            }
+            System.out.println("Hmm...\nI couldn't find that card.");
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException a) {
+
+                }
+                return getCardShown();
+        }
+    }
+
     // TODO: make a logTurn Method
     // TODO: make a edit log method
     // TODO: make method in case player is stabbed or bleeds
     // TODO: add card shown method in case its your turn
+    // TODO: combine all confirm methods
     public void logTurn() {
         Player initWhosTurnPlayer = askWhosTurn();// whos turn it is
         Turn initTurn = null;
@@ -566,7 +655,7 @@ public class ClueGUI {
             while (!confirmWhoProved(initwhoProvedWrongPlayer)) {
                 initwhoProvedWrongPlayer = askWhoProved();
             }
-            Card initCardShown = null;
+            Card initCardShown = getCardShown();
             // FIXME: add a card shown so that if its your turn.
 
             if (initCardShown != null) {

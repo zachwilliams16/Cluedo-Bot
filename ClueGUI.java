@@ -100,7 +100,7 @@ public class ClueGUI {
      * prints the log so that viewer can read it
      */
     public void printLog() {
-        ArrayList<Turn> initTurns = MainClass.getLog().getTurns();
+        ArrayList<Turn> initTurns = Log.getTurns();
         for (int i = 0; i < initTurns.size(); i++) {
             System.out.println(initTurns.get(i).toString());
         }
@@ -183,6 +183,11 @@ public class ClueGUI {
 
     }
 
+    /**
+     * 
+     * @param initCard card to be confirmed
+     * @return if that is the card they guessed (true if it is or false if it isn't)
+     */
     private boolean confirmCard(Card initCard) {
         clearScreen();
         Scanner input = new Scanner(System.in);
@@ -215,38 +220,42 @@ public class ClueGUI {
 
     }
 
-    private void finalConfirm(Turn initTurn) {
-        System.out.println(initTurn);
-        System.out.println("Is this correct?\n0 - yes\n1 - no");
-
+    /**
+     * 
+     * @param initCard the card that was shown
+     * @return if that card was the card that was shown (true if it is or false if
+     *         it isn't)
+     */
+    private boolean confirmCardShown(Card initCard) {
+        clearScreen();
         Scanner input = new Scanner(System.in);
-        String initUserInputString = input.nextLine();
+        System.out.println(initCard.getName() + " was shown?\n0 - yes\n1 - no");
+
+        String initCardAnswerInput = input.nextLine();
+        initCardAnswerInput.toLowerCase();
         input.close();
 
-        boolean initTheyWantToChange = false;
         try {
-            int initUserInputInt = Integer.parseInt(initUserInputString);
-            if (initUserInputInt == 0) {
-                return;
-            } else if (initUserInputInt == 1) {
-                initTheyWantToChange = true;
+            int initCardAnswerInputInt = Integer.parseInt(initCardAnswerInput);
+            if (initCardAnswerInputInt == 0) {
+                return true;
+            } else if (initCardAnswerInputInt == 1) {
+                return false;
+            } else {
+                return confirmCard(initCard);
             }
-        } catch (Exception e) {
 
-            if (initUserInputString.equals("yes")) {
-                return;
-            } else if (initUserInputString.equals("no")) {
-                initTheyWantToChange = true;
+        } catch (NumberFormatException e) {
+            if (initCardAnswerInput.equals("yes")) {
+                return true;
+            } else if (initCardAnswerInput.equals("no")) {
+                return false;
+            } else {
+                return confirmCard(initCard);
             }
-        }
-        if (initTheyWantToChange) {
-            changeEditTurn(initTurn);
+
         }
 
-    }
-
-    public void changeEditTurn(Turn initTurn) {
-        // TODO: asks what they want to change and changes it
     }
 
     /**
@@ -549,6 +558,7 @@ public class ClueGUI {
         boolean shownCard = false;
         String userAnswerInputString = input.nextLine();
         userAnswerInputString.toLowerCase();
+        input.close();
         try {// if they gave a number
             int userAnswerInputInt = Integer.parseInt(userAnswerInputString);
             if (userAnswerInputInt == 0) {
@@ -611,64 +621,72 @@ public class ClueGUI {
             }
 
         } catch (Exception e) {// if they responded with a string
-            for(Card initCard : MainClass.getAllCards()){
-                if(initCard.getName().equals(userAnswerInputString)){
+            for (Card initCard : MainClass.getAllCards()) {
+                if (initCard.getName().equals(userAnswerInputString)) {
                     return initCard;// finish else
                 }
             }
             System.out.println("Hmm...\nI couldn't find that card.");
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException a) {
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException a) {
 
-                }
-                return getCardShown();
+            }
+            return getCardShown();
         }
     }
 
-    // TODO: make a logTurn Method
     // TODO: make a edit log method
     // TODO: make method in case player is stabbed or bleeds
-    // TODO: add card shown method in case its your turn
-    // TODO: combine all confirm methods
     public void logTurn() {
+
         Player initWhosTurnPlayer = askWhosTurn();// whos turn it is
-        Turn initTurn = null;
         while (!comfirmWhosTurn(initWhosTurnPlayer)) {
             initWhosTurnPlayer = askWhosTurn();
         }
+
         boolean initDidTheyMakeToRoom = didTheyMakeToRoom();// did they make it to a room
+
+        Turn initTurn = null;
+
         if (!initDidTheyMakeToRoom) {// did they make it to a room
+
             Card initWhereGuessCard = askWhereCard();// where they guessed
             while (!confirmCard(initWhereGuessCard)) {
                 initWhereGuessCard = askWhereCard();
             }
+
             Card initWhoGuessCard = askWhoCard();// who they guessed
             while (!confirmCard(initWhoGuessCard)) {
                 initWhoGuessCard = askWhoCard();
             }
-            Card initWhatGuessCard = askWhatCard();
+
+            Card initWhatGuessCard = askWhatCard();// what they guessed
             while (confirmCard(initWhatGuessCard)) {
                 initWhatGuessCard = askWhatCard();
             }
+
             Player initwhoProvedWrongPlayer = askWhoProved();// who proved wrong
             while (!confirmWhoProved(initwhoProvedWrongPlayer)) {
                 initwhoProvedWrongPlayer = askWhoProved();
             }
-            Card initCardShown = getCardShown();
-            // FIXME: add a card shown so that if its your turn.
 
-            if (initCardShown != null) {
+            Card initCardShown = getCardShown();// what was the card shown
+            while (confirmCardShown(initCardShown)) {
+                initCardShown = getCardShown();
+            }
+
+            if (initCardShown != null) {// if they were shown a card
                 initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard,
                         initWhereGuessCard, initCardShown);
-            } else {
+            } else {// if they weren't shown a card
                 initTurn = new Turn(initWhosTurnPlayer, initwhoProvedWrongPlayer, initWhoGuessCard, initWhatGuessCard,
                         initWhereGuessCard);
             }
-            finalConfirm(initTurn);
-            MainClass.getLog().addTurn(initTurn);// add a confirm for if they didnt make it to a room
-        } else {
 
+            Log.addTurn(initTurn);
+        } else {
+            Log.addTurn(new Turn(initWhosTurnPlayer));
         }
 
     }

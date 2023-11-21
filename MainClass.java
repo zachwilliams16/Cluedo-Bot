@@ -12,7 +12,22 @@ public class MainClass {
     private static ArrayList<Card> allCards = new ArrayList<Card>();
     private static int CardsInHand;// number of cards in each persons hand
 
-    private static Log gameLog = new Log();
+    // methods for the load game method in game save
+    public static void setWhoCards(ArrayList<Card> initCards) {
+        whoCards = initCards;
+    }
+
+    public static void setWhatCards(ArrayList<Card> initCards) {
+        whatCards = initCards;
+    }
+
+    public static void setWhereCards(ArrayList<Card> initCards) {
+        whereCards = initCards;
+    }
+
+    public static void setActivePlayers(ArrayList<Player> initActivePlayers) {
+        activePlayers = initActivePlayers;
+    }
 
     /**
      * 
@@ -144,12 +159,17 @@ public class MainClass {
         }
     }
 
-    /**
-     * 
-     * @return the game log
-     */
-    public static Log getLog() {
-        return gameLog;
+    private static void mainGameLoop() {
+        while (true) {
+            // TODO: make a home spot (displays all options eg: log turn, add stab/bleed,
+            // edit log, save, load)
+            // TODO: make a log method to have displayed in a seperate terminal
+            // TODO: make a method to save a game eg: save sheet and gamelog to a file so it
+            // can be loaded back up
+            // TODO: for load game make a new gamesave in main and run load game
+            // TODO: game log saves on creation
+            boolean initSomethingChanged = false;
+        }
     }
 
     public static void main(String[] args) {

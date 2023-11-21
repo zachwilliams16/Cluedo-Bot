@@ -2,17 +2,13 @@ import java.util.ArrayList;
 
 public class Log {
 
-    private ArrayList<Turn> gameLog = new ArrayList<Turn>();
-
-    public Log() {
-
-    }
+    private static ArrayList<Turn> gameLog = new ArrayList<Turn>();
 
     /**
      * 
      * @return the list of turns that have happened in the game
      */
-    public ArrayList<Turn> getTurns() {
+    public static ArrayList<Turn> getTurns() {
         return gameLog;
     }
 
@@ -20,7 +16,7 @@ public class Log {
      * 
      * @param initTurn adds a turn
      */
-    public void addTurn(Turn initTurn) {
+    public static void addTurn(Turn initTurn) {
         gameLog.add(initTurn);
     }
 
@@ -28,10 +24,18 @@ public class Log {
      * 
      * @return the full game log
      */
-    public ArrayList<Turn> returnGameLog() {
+    public static ArrayList<Turn> returnGameLog() {
         return gameLog;
     }
 
+    /**
+     * for loading the game
+     * 
+     * @param initGameLog the log from the saved game
+     */
+    public static void setGameLog(ArrayList<Turn> initGameLog) {
+        gameLog = initGameLog;
+    }
 }
 
 class Turn {

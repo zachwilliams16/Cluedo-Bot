@@ -5,7 +5,13 @@ public class LogicEngine {
     // cards tehy might have proved wrong when they did prove wrong. goes off of
     // playerdidprovewrong
 
-    private ArrayList<Player> getDidntProve(Turn initTurn) {
+    /**
+     * 
+     * @param initTurn the turn that this method is finding all teh players who
+     *                 couldnt prove
+     * @return the players who didnt prove
+     */
+    private static ArrayList<Player> getDidntProve(Turn initTurn) {
         ArrayList<Player> initplayers = new ArrayList<Player>();
 
         int temp = initTurn.getWhosTurn().getNumID();
@@ -30,49 +36,49 @@ public class LogicEngine {
      * 
      * @return true if something changed or false if something didnt
      */
-    public boolean playerHasAllCards() {
+    public static boolean playerHasAllCards() {
         boolean initSomethingChanged = false;
-        for (Player player : MainClass.getPlayers()) {// for all players
-            if (player.getHandSize() >= MainClass.getNumCardsInHand()) {// if player has full hand
+        for (Player initPlayer : MainClass.getPlayers()) {// for all players
+            if (initPlayer.getHandSize() >= MainClass.getNumCardsInHand()) {// if player has full hand
 
-                for (Card card : MainClass.getWhoCards()) {// for all who cards if not in hand add to not cards
+                for (Card initCard : MainClass.getWhoCards()) {// for all who cards if not in hand add to not cards
                     boolean cardInHand = false;
-                    for (Card myCard : player.getHand()) {
-                        if (myCard.equals(card)) {
+                    for (Card myCard : initPlayer.getHand()) {
+                        if (myCard.equals(initCard)) {
                             cardInHand = true;
                             break;
                         }
                     }
                     if (!cardInHand) {
-                        card.addDefDoesnt(player);
+                        initCard.addDefDoesnt(initPlayer);
                         initSomethingChanged = true;
                     }
                 }
 
-                for (Card card : MainClass.getWhatCards()) {// for all what cards if not in hand add to not cards
+                for (Card initCard : MainClass.getWhatCards()) {// for all what cards if not in hand add to not cards
                     boolean cardInHand = false;
-                    for (Card myCard : player.getHand()) {
-                        if (myCard.equals(card)) {
+                    for (Card myCard : initPlayer.getHand()) {
+                        if (myCard.equals(initCard)) {
                             cardInHand = true;
                             break;
                         }
                     }
                     if (!cardInHand) {
-                        card.addDefDoesnt(player);
+                        initCard.addDefDoesnt(initPlayer);
                         initSomethingChanged = true;
                     }
                 }
 
-                for (Card card : MainClass.getWhereCards()) {// for all where cards if not in hand add to not cards
+                for (Card initCard : MainClass.getWhereCards()) {// for all where cards if not in hand add to not cards
                     boolean cardInHand = false;
-                    for (Card myCard : player.getHand()) {
-                        if (myCard.equals(card)) {
+                    for (Card myCard : initPlayer.getHand()) {
+                        if (myCard.equals(initCard)) {
                             cardInHand = true;
                             break;
                         }
                     }
                     if (!cardInHand) {
-                        card.addDefDoesnt(player);
+                        initCard.addDefDoesnt(initPlayer);
                         initSomethingChanged = true;
                     }
                 }
@@ -87,15 +93,15 @@ public class LogicEngine {
      * 
      * @return true if something chnaged or false if something wasnt changed
      */
-    public boolean playerDidntProveWrong() {
+    public static boolean playerDidntProveWrong() {
         boolean initSomethingChanged = false;
-        for (Turn turn : MainClass.getLog().getTurns()) {
+        for (Turn initTurn : Log.getTurns()) {
 
-            if (turn.getMadeToRoom()) {
-                for (Player player : getDidntProve(turn)) {
-                    turn.getWhoGuess().addDefDoesnt(player);
-                    turn.getWhatGuess().addDefDoesnt(player);
-                    turn.getWhereGuess().addDefDoesnt(player);
+            if (initTurn.getMadeToRoom()) {
+                for (Player initPlayer : getDidntProve(initTurn)) {
+                    initTurn.getWhoGuess().addDefDoesnt(initPlayer);
+                    initTurn.getWhatGuess().addDefDoesnt(initPlayer);
+                    initTurn.getWhereGuess().addDefDoesnt(initPlayer);
                     initSomethingChanged = true;
                 }
             }
@@ -109,16 +115,16 @@ public class LogicEngine {
      * 
      * @return true if something changed
      */
-    public boolean playerDidProveWrong() {
+    public static boolean playerDidProveWrong() {
         boolean initSomethingChanged = false;
-        for (Turn turn : MainClass.getLog().getTurns()) {
-            if (turn.getMadeToRoom()) {
-                if (turn.getWhoProved() != null) {
+        for (Turn initTurn : Log.getTurns()) {
+            if (initTurn.getMadeToRoom()) {
+                if (initTurn.getWhoProved() != null) {
                     ArrayList<Card> initCards = new ArrayList<Card>();
-                    initCards.add(turn.getWhoGuess());
-                    initCards.add(turn.getWhereGuess());
-                    initCards.add(turn.getCardShown());
-                    turn.getWhoProved().addMaybeCards(initCards);
+                    initCards.add(initTurn.getWhoGuess());
+                    initCards.add(initTurn.getWhereGuess());
+                    initCards.add(initTurn.getCardShown());
+                    initTurn.getWhoProved().addMaybeCards(initCards);
                     initSomethingChanged = true;
                 }
 
@@ -133,7 +139,7 @@ public class LogicEngine {
      * 
      * @return true if something changed or false if nothing changed
      */
-    public boolean playerOwnsCard() {
+    public static boolean playerOwnsCard() {
         boolean initSomethingChanged = false;
         for (Card initCard : MainClass.getWhoCards()) {
             if (initCard.getOwner() != null) {
@@ -156,7 +162,7 @@ public class LogicEngine {
      * 
      * @return true if something changed false if nothing changed
      */
-    public boolean onlyPlayerPossible() {
+    public static boolean onlyPlayerPossible() {
         boolean initSomethingChanged = false;
 
         boolean whoCardGuess = false;

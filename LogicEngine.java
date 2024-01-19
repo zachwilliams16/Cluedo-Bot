@@ -2,7 +2,8 @@ import java.util.ArrayList;
 
 public class LogicEngine {
     // TODO: go through all players and see if they could only have one card from
-    // cards tehy might have proved wrong when they did prove wrong. goes off of
+    // cards tehy might have proved wrong when they did prove wrong with that card.
+    // goes off of
     // playerdidprovewrong
 
     /**

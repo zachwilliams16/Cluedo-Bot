@@ -644,6 +644,7 @@ public class ClueGUI {
 
     // TODO: make a edit log method
     // TODO: make method in case player is stabbed or bleeds
+    // FIXME: update all user input functions to not freeze the program. they get input and them just stop working and dont let anything happen
     public void logTurn() {
 
         Player initWhosTurnPlayer = askWhosTurn();// whos turn it is

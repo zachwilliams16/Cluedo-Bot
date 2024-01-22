@@ -552,6 +552,7 @@ public class ClueGUI {
      * @return the card that was shown
      */
     private Card getCardShown() {
+        clearScreen();
         Scanner input = new Scanner(System.in);
         System.out.println("Were you shown a card?\n0 - yes\n1 - no");
 
@@ -689,5 +690,49 @@ public class ClueGUI {
             Log.addTurn(new Turn(initWhosTurnPlayer));
         }
 
+    }
+
+    public void mainMenu() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("\n");
+        System.out.println("1 - Log a new turn");
+        System.out.println("2 - Add peice of information - Not Working right now");
+        System.out.println("3 - View log");
+        System.out.println("Which number would you like to do?\n");
+        int initUserInput = input.nextInt();
+
+        if (initUserInput == 1) {
+            clearScreen();
+            System.out.println("You want to log a turn?\n0 - yes\n1 - no");
+
+            String initInputLogTurnString = input.nextLine();
+            initInputLogTurnString.toLowerCase();
+            input.close();
+
+            // This try-catch takes the input and finds what the user wanted to do
+            try {
+                int initInputLogTurnInt = Integer.parseInt(initInputLogTurnString);
+                if (initInputLogTurnInt == 0) {
+                    logTurn();
+                } else if (initInputLogTurnInt == 1) {
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                if (initInputLogTurnString.equals("yes")) {
+                    logTurn();
+                } else if (initInputLogTurnString.equals("no")) {
+                    return;
+                } else {
+                    System.out.println("Hmm, I couldnt find a action for that answer.");
+                }
+            }
+        } else if (initUserInput == 2) {
+            System.out.println("Sorry this isnt working right now");
+        } else if(initUserInput == 3){
+            System.out.println("Sorry this isnt working right now");
+        } else{
+            System.out.println("I couldnt find a action for that");
+        }
     }
 }

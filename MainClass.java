@@ -168,7 +168,11 @@ public class MainClass {
             // can be loaded back up
             // TODO: for load game make a new gamesave in main and run load game
             // TODO: game log saves on creation
-            boolean initSomethingChanged = false;
+            boolean initSomethingChanged = true;
+            while (initSomethingChanged) {
+                initSomethingChanged = false;
+                
+            }
         }
     }
 

@@ -161,7 +161,7 @@ public class LogicEngine {
      * it (maybe list) and all other players dont have this card (defDoesnt list))
      * then that player has to have that card
      * 
-     * @return true if something changed false if nothing changed
+     * @returntrue if something changed false if nothing changed
      */
     public static boolean onlyPlayerPossible() {
         boolean initSomethingChanged = false;

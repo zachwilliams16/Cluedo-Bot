@@ -12,6 +12,8 @@ public class MainClass {
     private static ArrayList<Card> allCards = new ArrayList<Card>();
     private static int CardsInHand;// number of cards in each persons hand
 
+    private static ClueGUI mainClueGUI;
+
     // methods for the load game method in game save
     public static void setWhoCards(ArrayList<Card> initCards) {
         whoCards = initCards;
@@ -159,10 +161,12 @@ public class MainClass {
         }
     }
 
+    /**
+     * This is the main game loop. it will run until the user stops it
+     */
     private static void mainGameLoop() {
-        while (true) {
-            // TODO: make a home spot (displays all options eg: log turn, add stab/bleed,
-            // edit log, save, load)
+        while (true) {// while game is active
+            mainClueGUI.mainMenu();
             // TODO: make a log method to have displayed in a seperate terminal
             // TODO: make a method to save a game eg: save sheet and gamelog to a file so it
             // can be loaded back up
@@ -170,8 +174,24 @@ public class MainClass {
             // TODO: game log saves on creation
             boolean initSomethingChanged = true;
             while (initSomethingChanged) {
-                initSomethingChanged = false;
-                
+                boolean initSomethingNewChanged = false;
+
+                // this will do all logic engine actions until something has not changed
+                if (LogicEngine.playerHasAllCards()) {
+                    initSomethingNewChanged = true;
+                } else if (LogicEngine.playerDidProveWrong()) {
+                    initSomethingNewChanged = true;
+                } else if (LogicEngine.playerDidntProveWrong()) {
+                    initSomethingNewChanged = true;
+                } else if (LogicEngine.playerOwnsCard()) {
+                    initSomethingNewChanged = true;
+                } else if (LogicEngine.onlyPlayerPossible()) {
+                    initSomethingNewChanged = true;
+                }
+
+                if(!initSomethingNewChanged){
+                    initSomethingChanged = false;
+                }
             }
         }
     }
@@ -194,11 +214,11 @@ public class MainClass {
             break;
         }
 
-        ClueGUI mainGUI = new ClueGUI();
+        mainClueGUI = new ClueGUI();
 
         whoCards.get(0).setOwner(activePlayers.get(0));
         whoCards.get(1).setOwner(activePlayers.get(0));
         whoCards.get(2).setOwner(activePlayers.get(0));
-        mainGUI.printsheet();
+        mainGameLoop();
     }
 }

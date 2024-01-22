@@ -26,7 +26,7 @@ public class ClueGUI {
     /**
      * prints the clue sheet
      */
-    public void printsheet() {
+    private void printsheet() {
         clearScreen();
 
         updateSheet();
@@ -39,7 +39,7 @@ public class ClueGUI {
     /**
      * updates the Clue sheet
      */
-    public void updateSheet() {
+    private void updateSheet() {
         String temp = "/";
         while (true) {// first line
             clueSheet.clear();
@@ -99,11 +99,16 @@ public class ClueGUI {
     /**
      * prints the log so that viewer can read it
      */
-    public void printLog() {
+    private void printLog() {
         ArrayList<Turn> initTurns = Log.getTurns();
         for (int i = 0; i < initTurns.size(); i++) {
             System.out.println(initTurns.get(i).toString());
         }
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("When done viewing the log press enter");
+        input.nextLine();
+        input.close();
     }
 
     /**
@@ -692,16 +697,26 @@ public class ClueGUI {
 
     }
 
+    /**
+     * When called it will print the log and user options that they can do
+     * it can log a turn,
+     */
     public void mainMenu() {
+        printsheet();
         Scanner input = new Scanner(System.in);
-        System.out.println("\n");
-        System.out.println("1 - Log a new turn");
-        System.out.println("2 - Add peice of information - Not Working right now");
-        System.out.println("3 - View log");
-        System.out.println("Which number would you like to do?\n");
+
+        while (true) {// This will print the options after the clue sheet
+            System.out.println("\n");
+            System.out.println("1 - Log a new turn");
+            System.out.println("2 - Add peice of information not in regular game loop - Not Working right now");
+            System.out.println("3 - View log");
+            System.out.println("Which number would you like to do?\n");
+            break;
+        }
+
         int initUserInput = input.nextInt();
 
-        if (initUserInput == 1) {
+        if (initUserInput == 1) {// log a turn
             clearScreen();
             System.out.println("You want to log a turn?\n0 - yes\n1 - no");
 
@@ -727,12 +742,43 @@ public class ClueGUI {
                     System.out.println("Hmm, I couldnt find a action for that answer.");
                 }
             }
-        } else if (initUserInput == 2) {
+        } else if (initUserInput == 2) {// add stab/bleed information - not working
             System.out.println("Sorry this isnt working right now");
-        } else if(initUserInput == 3){
-            System.out.println("Sorry this isnt working right now");
-        } else{
+        } else if (initUserInput == 3) {// add view log method - not working
+
+            clearScreen();
+            System.out.println("You want to view the log?\n0 - yes\n1 - no");
+
+            String initInputLogTurnString = input.nextLine();
+            initInputLogTurnString.toLowerCase();
+            input.close();
+
+            // This try-catch takes the input and finds what the user wanted to do
+            try {
+
+                System.out.println("checkpoint");
+                int initInputLogTurnInt = Integer.parseInt(initInputLogTurnString);
+                System.out.println("checkpoint");
+
+                if (initInputLogTurnInt == 0) {
+                    printLog();
+                } else if (initInputLogTurnInt == 1) {
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                if (initInputLogTurnString.equals("yes")) {
+                    printLog();
+                } else if (initInputLogTurnString.equals("no")) {
+                    return;
+                } else {
+                    System.out.println("Hmm, I couldnt find a action for that answer.");
+                }
+            }
+
+        } else {// couldnt find something to do from user input
             System.out.println("I couldnt find a action for that");
         }
+
     }
 }
